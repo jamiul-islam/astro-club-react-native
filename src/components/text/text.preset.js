@@ -2,7 +2,7 @@ import { colors, typography } from "../../themes/index";
 
 const BASE = {
   fontFamily: typography.primary,
-  fontSize: 16,
+  fontSize: 14,
   color: colors.white,
 };
 

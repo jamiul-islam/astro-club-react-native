@@ -1,5 +1,11 @@
-import React from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import PlanetHeader from "../components/planet-header";
@@ -29,16 +35,33 @@ const PlanetItem = ({ item }) => {
 };
 
 export default function Home({ navigation }) {
+  const [list, setList] = useState(PLANET_LIST);
   const renderItem = ({ item }) => {
     return <PlanetItem item={item} />;
+  };
+
+  const searchFilter = (text) => {
+    const filteredList = PLANET_LIST.filter((item) => {
+      const itemName = item.name.toLocaleLowerCase();
+      const userText = text.toLocaleLowerCase();
+      return itemName.indexOf(userText) > -1;
+    });
+    setList(filteredList);
   };
 
   return (
     <View style={styles.container}>
       <PlanetHeader />
+      <TextInput
+        placeholder="type a planet's name"
+        placeholderTextColor={colors.grey}
+        autoCorrect={false}
+        style={styles.searchInput}
+        onChangeText={(text) => searchFilter(text)}
+      />
       <FlatList
         contentContainerStyle={styles.list}
-        data={PLANET_LIST}
+        data={list}
         keyExtractor={(item) => item.name}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -77,5 +100,13 @@ const styles = StyleSheet.create({
   separator: {
     borderBottomColor: colors.grey,
     borderWidth: 0.5,
+  },
+  searchInput: {
+    paddingHorizontal: spacing[5],
+    paddingVertical: spacing[2],
+    color: colors.white,
+    borderBottomColor: colors.grey,
+    borderBottomWidth: 1,
+    margin: spacing[5],
   },
 });

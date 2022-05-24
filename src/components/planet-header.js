@@ -1,0 +1,37 @@
+import React from "react";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import { colors, spacing } from "../themes";
+import Text from "./text/text";
+import { useNavigation } from "@react-navigation/native";
+
+export default function PlanetHeader({ backButton = false }) {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.container}>
+      {backButton && (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <AntDesign
+            style={{ paddingRight: spacing[4] }}
+            name="left"
+            size={15}
+            color="white"
+          />
+        </TouchableOpacity>
+      )}
+      <Text preset="h2">THE PLANETS</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    paddingLeft: spacing[6],
+    borderBottomWidth: 0.5,
+    borderColor: colors.white,
+    paddingBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors.black,
+  },
+});

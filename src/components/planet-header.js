@@ -5,7 +5,7 @@ import { colors, spacing } from "../themes";
 import Text from "./text/text";
 import { useNavigation } from "@react-navigation/native";
 
-export default function PlanetHeader({ backButton = false }) {
+export default function PlanetHeader({ backButton = false, about = false }) {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -20,18 +20,30 @@ export default function PlanetHeader({ backButton = false }) {
         </TouchableOpacity>
       )}
       <Text preset="h2">THE PLANETS</Text>
+      {about && (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("About");
+          }}
+        >
+          <Text preset="small" style={styles.aboutText}>
+            about me
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: spacing[6],
+    paddingHorizontal: spacing[6],
     borderBottomWidth: 0.5,
     borderColor: colors.white,
     paddingBottom: 10,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: colors.black,
   },
 });

@@ -51,7 +51,7 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <PlanetHeader />
+      <PlanetHeader backButton={false} about={true} />
       <TextInput
         placeholder="type a planet's name"
         placeholderTextColor={colors.grey}

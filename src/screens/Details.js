@@ -37,7 +37,7 @@ const PlanetSection = ({ title, value }) => {
   );
 };
 
-export default function Details({ navigation, route }) {
+export default function Details({ route }) {
   const planet = route.params.planet;
   const {
     name,
@@ -102,7 +102,7 @@ export default function Details({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <PlanetHeader backButton={true} />
+      <PlanetHeader backButton={true} about={true} />
       <ScrollView>
         <Animatable.View
           animation="zoomInDown"
@@ -134,6 +134,7 @@ export default function Details({ navigation, route }) {
             easing={"ease-in-out-sine"}
             delay={3000}
             duration={300}
+            onAnimationEnd={startRotation}
           >
             <TouchableOpacity style={styles.source} onPress={onPressLink}>
               <Text>Source: </Text>

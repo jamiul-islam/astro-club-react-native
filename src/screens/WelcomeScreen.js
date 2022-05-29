@@ -53,7 +53,7 @@ export default function WelcomeScreen({ navigation }) {
               Welcome to Astro-Club
             </Text>
           </Animatable.View>
-          <Animatable.View animation={"tada"} delay={2000} duration={2000}>
+          <Animatable.View animation={"tada"} delay={2000} duration={1500}>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("Home");

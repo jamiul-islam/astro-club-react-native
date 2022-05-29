@@ -34,7 +34,7 @@ const PlanetItem = ({ item }) => {
   );
 };
 
-export default function Home({ navigation }) {
+export default function Home() {
   const [list, setList] = useState(PLANET_LIST);
   const renderItem = ({ item }) => {
     return <PlanetItem item={item} />;

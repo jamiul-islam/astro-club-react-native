@@ -34,14 +34,12 @@ export default function App() {
   return (
     <View style={styles.androidSafeArea}>
       <NavigationContainer theme={DarkTheme}>
-        <Stack.Navigator
-          screenOptions={{ headerShown: false, gestureDirection: true }}
-        >
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Details" component={Details} />
         </Stack.Navigator>
       </NavigationContainer>
-      <StatusBar style="light" />
+      <StatusBar style="light" backgroundColor={colors.black} />
     </View>
   );
 }

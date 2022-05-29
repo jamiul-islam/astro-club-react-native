@@ -1,11 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
+import TypeWriter from "react-native-typewriter";
+
 import {
   View,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   Linking,
+  Animated,
+  Easing,
 } from "react-native";
+import * as Animatable from "react-native-animatable";
 import { Feather } from "@expo/vector-icons";
 import PlanetHeader from "../components/planet-header";
 import Text from "../components/text/text";
@@ -44,9 +49,20 @@ export default function Details({ navigation, route }) {
     avgTemp,
   } = planet;
 
+  class TypingText extends Component {
+    render() {
+      return (
+        <TypeWriter typing={1} initialDelay={1000} maxDelay={100}>
+          {name}
+        </TypeWriter>
+      );
+    }
+  }
+
   const onPressLink = () => {
     Linking.openURL(wikiLink);
   };
+
   const renderImage = (name) => {
     switch (name) {
       case "mercury":
@@ -68,23 +84,65 @@ export default function Details({ navigation, route }) {
     }
   };
 
+  let rotateValueHolder = new Animated.Value(0);
+  const startRotation = () => {
+    rotateValueHolder.setValue(0);
+    Animated.timing(rotateValueHolder, {
+      toValue: 1,
+      duration: 5000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+  };
+
+  const RotateData = rotateValueHolder.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "720deg"],
+  });
+
   return (
     <View style={styles.container}>
       <PlanetHeader backButton={true} />
       <ScrollView>
-        <View style={styles.planetImageView}>{renderImage(name)}</View>
-        <View style={styles.detailsView}>
-          <Text preset="h1" style={styles.name}>
-            {name}
-          </Text>
-          <Text style={styles.description}>{description}</Text>
-          <TouchableOpacity style={styles.source} onPress={onPressLink}>
-            <Text>Source: </Text>
-            <Text preset="h4" style={styles.wikipedia}>
-              Wikipedia
-            </Text>
-            <Feather name="arrow-up-right" size={17} color="white" />
+        <Animatable.View
+          animation="zoomInDown"
+          easing="ease-in-out-back"
+          style={styles.planetImageView}
+        >
+          <TouchableOpacity onPress={startRotation}>
+            <Animated.View style={{ transform: [{ rotate: RotateData }] }}>
+              {renderImage(name)}
+            </Animated.View>
           </TouchableOpacity>
+        </Animatable.View>
+        <View style={styles.detailsView}>
+          <Animatable.View animation={"bounce"} delay={1800}>
+            <Text preset="h1" style={styles.name}>
+              <TypingText />
+            </Text>
+          </Animatable.View>
+          <Animatable.View
+            animation="fadeInUp"
+            easing={"ease-in-out-sine"}
+            delay={2500}
+            duration={300}
+          >
+            <Text style={styles.description}>{description}</Text>
+          </Animatable.View>
+          <Animatable.View
+            animation="fadeInUp"
+            easing={"ease-in-out-sine"}
+            delay={3000}
+            duration={300}
+          >
+            <TouchableOpacity style={styles.source} onPress={onPressLink}>
+              <Text>Source: </Text>
+              <Text preset="h4" style={styles.wikipedia}>
+                Wikipedia
+              </Text>
+              <Feather name="arrow-up-right" size={17} color="white" />
+            </TouchableOpacity>
+          </Animatable.View>
         </View>
         <View style={{ height: 40 }} />
         <PlanetSection title="ROTATION TIME" value={rotationTime} />

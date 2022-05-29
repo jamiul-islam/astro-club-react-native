@@ -1,40 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, Platform, StatusBar } from "react-native";
 
 import { colors } from "./src/themes/colors";
-import { spacing } from "./src/themes/spacing";
-
-import * as Font from "expo-font";
-import AppLoading from "expo-app-loading";
-import useFonts from "./hooks/useFonts";
+import Text from "./src/components/text/text";
+import { useFonts } from "expo-font";
 
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./src/screens/Home";
 import Details from "./src/screens/Details";
+import WelcomeScreen from "./src/screens/WelcomeScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [IsReady, SetIsReady] = useState(false);
+  const [loaded] = useFonts({
+    "Antonio-Medium": require("./assets/fonts/Antonio-Medium.ttf"),
+    "Spartan-Bold": require("./assets/fonts/Spartan-Bold.ttf"),
+    "Spartan-Regular": require("./assets/fonts/Spartan-Regular.ttf"),
+  });
 
-  const LoadFonts = async () => {
-    await useFonts();
-  };
-
-  if (!IsReady) {
-    return (
-      <AppLoading
-        startAsync={LoadFonts}
-        onFinish={() => SetIsReady(true)}
-        onError={() => {}}
-      />
-    );
+  if (!loaded) {
+    return <Text>"custom font is loading..."</Text>;
   }
+
   return (
     <View style={styles.androidSafeArea}>
       <NavigationContainer theme={DarkTheme}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Details" component={Details} />
         </Stack.Navigator>
